@@ -30,6 +30,7 @@ void CGameManager::init(CPlane * p, CGameMap * map, CObjectList * list, CObjectL
 void CGameManager::checkCollision()
 {
 	int count = m_bulletList->getCount();
+	bool isbulletremove = false;
 	for (int bi = 0; bi < count; bi++)
 	{
 		CGameObject *curBullet = m_bulletList->getObject(bi);
@@ -40,17 +41,16 @@ void CGameManager::checkCollision()
 			CGameObject *curEnemy = m_enemyList->getObject(ei);
 			if (curEnemy->getY() == curBullet->getY() && curEnemy->getX() == curBullet->getX()) {
 				m_enemyList->remove(ei);
-				m_bulletList->remove(bi);
+				isbulletremove = true;
 				break;
 			}
 		}
-		if (curBullet->getY() < 0) {
+		if (curBullet->getY() < 0 || isbulletremove == true) {
 			m_bulletList->remove(bi);
+			isbulletremove = false;
 			break;
 		}
-	}
-	// 醚舅 利 面倒贸府
-	
+	}	
 }
 
 void CGameManager::updataGame()
